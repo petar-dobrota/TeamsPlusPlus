@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/SF_Test" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="Chat.Data_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="Chat.Data_PartitionCount" Value="1" />
+    <Parameter Name="Chat.Data_MinReplicaSetSize" Value="3" />
+    <Parameter Name="Chat.Data_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="ChatData_PartitionCount" Value="1" />
+    <Parameter Name="ChatData_MinReplicaSetSize" Value="3" />
+    <Parameter Name="ChatData_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="Alphabet.Web_InstanceCount" Value="1" />
+    <Parameter Name="HelloStatefulWorld_PartitionCount" Value="1" />
+    <Parameter Name="HelloStatefulWorld_MinReplicaSetSize" Value="3" />
+    <Parameter Name="HelloStatefulWorld_TargetReplicaSetSize" Value="3" />
+  </Parameters>
+</Application>

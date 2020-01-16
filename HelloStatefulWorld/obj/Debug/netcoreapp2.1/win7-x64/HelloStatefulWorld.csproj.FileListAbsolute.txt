@@ -1,0 +1,14 @@
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.csproj.CoreCompileInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.AssemblyInfoInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.AssemblyInfo.cs
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\hostpolicy.dll
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\hostfxr.dll
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.exe
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.deps.json
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.runtimeconfig.json
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.runtimeconfig.dev.json
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.dll
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\bin\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.pdb
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.csprojAssemblyReference.cache
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.dll
+C:\Users\pedobrot\source\repos\SF-Test\HelloStatefulWorld\obj\Debug\netcoreapp2.1\win7-x64\HelloStatefulWorld.pdb

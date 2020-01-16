@@ -1,0 +1,3 @@
+C:\Users\pedobrot\source\repos\SF-Test\Stateless1\obj\Debug\netcoreapp2.1\win7-x64\Stateless1.csproj.CoreCompileInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\Stateless1\obj\Debug\netcoreapp2.1\win7-x64\Stateless1.AssemblyInfoInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\Stateless1\obj\Debug\netcoreapp2.1\win7-x64\Stateless1.AssemblyInfo.cs

@@ -1,0 +1,14 @@
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\hostpolicy.dll
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\hostfxr.dll
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.exe
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.deps.json
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.runtimeconfig.json
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.runtimeconfig.dev.json
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.dll
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.csproj.CoreCompileInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.AssemblyInfoInputs.cache
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.AssemblyInfo.cs
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\bin\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.pdb
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.dll
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.pdb
+C:\Users\pedobrot\source\repos\SF-Test\Alphabet.Web\obj\Debug\netcoreapp2.1\win7-x64\Alphabet.Web.csprojAssemblyReference.cache
