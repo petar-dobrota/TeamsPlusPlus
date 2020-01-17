@@ -22,7 +22,8 @@ namespace Alphabet.Web
 
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-            return new[] { new ServiceInstanceListener(context => this.CreateInputListener(context)) };
+            //return new[] { new ServiceInstanceListener(context => this.CreateInputListener(context)) };
+            return new List<ServiceInstanceListener>();
         }
 
         private ICommunicationListener CreateInputListener(ServiceContext context)
