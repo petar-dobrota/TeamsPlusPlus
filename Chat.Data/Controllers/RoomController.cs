@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Chat.Data.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Data;
 
@@ -13,34 +16,35 @@ namespace Chat.Data.Controllers
     [ApiController]
     public class RoomController : Controller
     {
+        private RoomService Service => RoomService.Instance;
 
-        private readonly ChatRoomRepository chatRoomRepo;
-
-        private readonly IReliableStateManager stateManager;
+        public static IReliableStateManager StateManager;
 
         public RoomController(IReliableStateManager stateManager)
         {
-            this.stateManager = stateManager;
-
-            // TODO: Impl
-            this.chatRoomRepo = new ChatRoomRepository();
+            StateManager = stateManager;
         }
 
         [HttpGet("{room}")]
-        public async Task<ActionResult<string>> GetRoomAsync(string room)
+        public async Task<ActionResult> GetRoom(string room)
+        // curl ${HH}"/api/room/myroom"
         {
-            ChatRoom roomStruct = await chatRoomRepo.GetRoom(room, 10);
-            return Json(roomStruct);
+            ChatRoom chatRoom = await Service.GetRoom(room, HttpContext.RequestAborted);
+            if (chatRoom != null)
+            {
+                return Json(chatRoom);
+            } else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost("{room}")]
-        public async Task<ActionResult<string>> SendMessage(string room, string user, [FromBody] string message)
+        public ActionResult SendMessage(string room, string user, [FromBody] string message)
+        // curl -H "Content-Type: application/json" -X POST --data "\"poruka\"" ${HH}"/api/room/myroom/?user=usrr&PartitionKey=3&PartitionKind=Int64Range"
         {
-            //curl  -H "Content-Type: application/json" -X POST --data "poruka" "http://MDCS-PEDOBROT1.europe.corp.microsoft.com:1200/1fac7f2c-1a56-4eb5-839f-629b4a63b72a/132236670309702419/c71cb315-1eea-459b-bc08-b55e4ac8839a/api/room/myroom?user=usrr&PartitionKey=3&PartitionKind=Int64Range"
-
-            //return new ActionResult<string>($"HELLOU from {room}\nto {user}\nwith message {message}\n");
-            ChatRoom roomStruct = await chatRoomRepo.GetRoom(room, 10);
-            return null;
+            Task dummy = Service.SendMessage(room, user, message, HttpContext.RequestAborted);
+            return Ok();
         }
 
     }

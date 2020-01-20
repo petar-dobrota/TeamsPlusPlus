@@ -4,8 +4,14 @@
 
 namespace Chat.Data.Controllers
 {
-    public struct ChatRoom
+    public class ChatRoom
     {
+        public ChatRoom(string name)
+        {
+            this.name = name;
+            this.messages = new List<ChatMessage>();
+        }
+
         public string name;
 
         /// <summary>
