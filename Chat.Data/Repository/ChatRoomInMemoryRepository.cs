@@ -17,7 +17,7 @@ namespace Chat.Data
 
         }
 
-        public Task<ChatRoom> GetRoom(string roomName, int historySize, CancellationToken cancellationToken)
+        public Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken)
         {
 
             if (roomsByName.TryGetValue(roomName,out var room))
@@ -35,25 +35,13 @@ namespace Chat.Data
             ChatRoom room;
             if (!roomsByName.TryGetValue(roomName, out room))
             {
-                throw new ArgumentException("");
+                room = new ChatRoom(roomName);
+                roomsByName[roomName] = room;
             }
 
             room.messages.Add(chatMessage);
             
             return Task.CompletedTask;
-        }
-
-        public Task Persist(ChatRoom roomStruct, CancellationToken cancellationToken)
-        {
-            roomsByName[roomStruct.name] = roomStruct;
-            return Task.CompletedTask;
-        }
-
-        public List<string> GetRoomNames(string forUser, CancellationToken cancellationToken)
-        {
-            // TODO: Impl
-            var keys = new List<string>(roomsByName.Keys);
-            return keys;
         }
     }
 }

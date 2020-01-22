@@ -60,7 +60,7 @@
     </Service>
     <Service Name="HelloStatefulWorld" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="HelloStatefulWorldType" TargetReplicaSetSize="[HelloStatefulWorld_TargetReplicaSetSize]" MinReplicaSetSize="[HelloStatefulWorld_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="26" LowKey="0" HighKey="25" />
+        <UniformInt64Partition PartitionCount="1" LowKey="0" HighKey="25" />
       </StatefulService>
     </Service>
   </DefaultServices>

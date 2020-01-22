@@ -30,7 +30,7 @@ namespace Chat.Data.Repository
             
         }
 
-        public async Task<ChatRoom> GetRoom(string roomName, int historySize, CancellationToken cancellationToken)
+        public async Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken)
         {
             IReliableQueue<ChatMessage> room = await GetRoomQueue(roomName);
 
@@ -39,7 +39,7 @@ namespace Chat.Data.Repository
             using (var tx = stateManager.CreateTransaction())
             {
                 var roomIterator = (await room.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
-                //roomIterator.Reset();
+                // roomIterator.Reset(); ?!
                 
                 while(await roomIterator.MoveNextAsync(cancellationToken))
                 {
@@ -47,20 +47,10 @@ namespace Chat.Data.Repository
                     chatRoom.messages.Add(msg);
                 }
 
-                //tx.Abort();
             }
 
             return chatRoom;
         }
-        
-        public List<string> GetRoomNames(string forUser, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task Persist(ChatRoom roomStruct, CancellationToken cancellationToken)
-        {
-            
-        }
+       
     }
 }

@@ -4,7 +4,12 @@ namespace Chat.Data.Controllers
 {
     public struct ChatMessage
     {
-        public string senderUsed;
-        public string messageBody;
+        public ChatMessage(string _senderUser, string _messageBody) { //: this() => senderUsed = _senderUser, messageBody=null;
+            senderUsed = _senderUser;
+            messageBody = _messageBody;
+        }
+
+        public readonly string senderUsed;
+        public readonly string messageBody;
     }
 }

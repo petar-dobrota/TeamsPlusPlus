@@ -24,12 +24,12 @@ namespace Chat.Data.Domain
 
         public Task<ChatRoom> GetRoom(string roomName, CancellationToken cancellationToken)
         {
-            return chatRoomRepo.GetRoom(roomName, 10, cancellationToken);
+            return chatRoomRepo.GetRoomAsync(roomName, 10, cancellationToken);
         }
 
         public async Task SendMessage(string room, string user, string message, CancellationToken cancellationToken)
         {
-            ChatRoom roomStruct = await chatRoomRepo.GetRoom(room, 0, cancellationToken);
+            ChatRoom roomStruct = await chatRoomRepo.GetRoomAsync(room, 0, cancellationToken);
             if (roomStruct == null)
             {
                 // lazy create room
@@ -37,16 +37,12 @@ namespace Chat.Data.Domain
                 roomStruct.name = room;
                 roomStruct.messages = new List<ChatMessage>();
 
-                await chatRoomRepo.Persist(roomStruct, cancellationToken);
+                //await chatRoomRepo.Persist(roomStruct, cancellationToken);
             }
 
-            var chatMessage = new ChatMessage
-            {
-                senderUsed = user,
-                messageBody = message
-            };
+            var chatMessage = new ChatMessage(user, message);
 
-            Task dummy = chatRoomRepo.AddMessageAsync(roomStruct.name, chatMessage, cancellationToken);
+            Task dummy = chatRoomRepo.AddMessageAsync(room, chatMessage, cancellationToken);
             // no need to await for message to be sent
 
         }
