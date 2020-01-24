@@ -34,6 +34,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Alphabet.Web\Alphabet.Web.csproj" />
     <ProjectReference Include="..\Chat.Data\Chat.Data.csproj" />
+    <ProjectReference Include="..\Chat.Web\Chat.Web.csproj">
+      <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
+    </ProjectReference>
     <ProjectReference Include="..\ChatData\ChatData.csproj" />
     <ProjectReference Include="..\HelloStatefulWorld\HelloStatefulWorld.csproj" />
   </ItemGroup>
