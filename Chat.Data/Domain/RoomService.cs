@@ -2,6 +2,7 @@
 using Chat.Data.Repository;
 using System;
 using System.Collections.Generic;
+using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,16 +11,12 @@ namespace Chat.Data.Domain
 {
     public class RoomService
     {
-        public static readonly RoomService Instance = new RoomService();
-
+        
         private readonly IChatRoomRepository chatRoomRepo;
 
-        public RoomService()
+        public RoomService(IChatRoomRepository chatRoomRepository)
         {
-
-            // TODO: Impl
-            // this.chatRoomRepo = new ChatRoomInMemoryRepository();
-            this.chatRoomRepo = new ChatRoomReliableRepository();
+            this.chatRoomRepo = chatRoomRepository;
         }
 
         public Task<ChatRoom> GetRoom(string roomName, CancellationToken cancellationToken)
@@ -34,17 +31,17 @@ namespace Chat.Data.Domain
             {
                 // lazy create room
                 roomStruct = new ChatRoom(room);
-                roomStruct.name = room;
-                roomStruct.messages = new List<ChatMessage>();
-
-                //await chatRoomRepo.Persist(roomStruct, cancellationToken);
             }
-
+            
             var chatMessage = new ChatMessage(user, message);
 
             Task dummy = chatRoomRepo.AddMessageAsync(room, chatMessage, cancellationToken);
             // no need to await for message to be sent
+        }
 
+        public async Task<int> GetRoomCountAsync(CancellationToken cancellationToken)
+        {
+            return await chatRoomRepo.GetRoomCountAsync(cancellationToken);
         }
     }
 }

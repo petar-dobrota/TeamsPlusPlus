@@ -12,11 +12,11 @@ namespace Chat.Data.Controllers
             this.messages = new List<ChatMessage>();
         }
 
-        public string name;
+        public readonly string name;
 
         /// <summary>
         /// Oldest message is at index 0
         /// </summary>
-        public List<ChatMessage> messages;
+        public readonly List<ChatMessage> messages;
     }
 }

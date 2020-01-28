@@ -58,8 +58,8 @@
     </Service>
     <Service Name="Chat.Data" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="Chat.DataType" TargetReplicaSetSize="[Chat.Data_TargetReplicaSetSize]" MinReplicaSetSize="[Chat.Data_MinReplicaSetSize]">
-        <!-- <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-2147483648" HighKey="2147483647" />-->
         <!-- <UniformInt64Partition PartitionCount="[HelloStatefulWorld_PartitionCount]" LowKey="0" HighKey="25" Chat.Data_PartitionCount/> -->
+        <!-- <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-2147483648" HighKey="2147483647" />-->
         <UniformInt64Partition PartitionCount="4" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>

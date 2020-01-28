@@ -12,11 +12,6 @@ namespace Chat.Data
 
         private readonly Dictionary<string, ChatRoom> roomsByName = new Dictionary<string, ChatRoom>();
 
-        private void TruncateHictory(ref ChatRoom room, int oldestIdx, int newestIdx)
-        {
-
-        }
-
         public Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken)
         {
 
@@ -42,6 +37,11 @@ namespace Chat.Data
             room.messages.Add(chatMessage);
             
             return Task.CompletedTask;
+        }
+
+        public Task<int> GetRoomCountAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(roomsByName.Count);
         }
     }
 }

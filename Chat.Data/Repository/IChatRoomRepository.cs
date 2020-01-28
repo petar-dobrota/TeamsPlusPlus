@@ -5,9 +5,11 @@ using Chat.Data.Controllers;
 
 namespace Chat.Data
 {
-    interface IChatRoomRepository
+    public interface IChatRoomRepository
     {
         Task AddMessageAsync(string roomName, ChatMessage chatMessage, CancellationToken cancellationToken);
         Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken);
+
+        Task<int> GetRoomCountAsync(CancellationToken cancellationToken);
     }
 }

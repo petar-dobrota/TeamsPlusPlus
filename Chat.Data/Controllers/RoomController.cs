@@ -16,20 +16,18 @@ namespace Chat.Data.Controllers
     [ApiController]
     public class RoomController : Controller
     {
-        private RoomService Service => RoomService.Instance;
-
-        public static IReliableStateManager StateManager;
-
-        public RoomController(IReliableStateManager stateManager)
+        private readonly RoomService roomService;
+        
+        public RoomController(RoomService roomService)
         {
-            StateManager = stateManager;
+            this.roomService = roomService;
         }
 
         [HttpGet("{room}")]
         public async Task<ActionResult> GetRoom(string room)
         // curl ${HH}"/api/room/myroom"
         {
-            ChatRoom chatRoom = await Service.GetRoom(room, HttpContext.RequestAborted);
+            ChatRoom chatRoom = await roomService.GetRoom(room, HttpContext.RequestAborted);
             if (chatRoom != null)
             {
                 return Json(chatRoom);
@@ -43,7 +41,8 @@ namespace Chat.Data.Controllers
         public ActionResult SendMessage(string room, string user, [FromBody] string message)
         // curl -H "Content-Type: application/json" -X POST --data "\"poruka\"" ${HH}"/api/room/myroom/?user=usrr&PartitionKey=3&PartitionKind=Int64Range"
         {
-            Task dummy = Service.SendMessage(room, user, message, HttpContext.RequestAborted);
+            Task dummy = roomService.SendMessage(room, user, message, HttpContext.RequestAborted);
+            
             return Ok();
         }
 

@@ -31,5 +31,11 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
-Chat.Data/bin/Debug/**
-Chat.Data/bin/Debug/
+/build/
+*.suo
+*.user
+*.sdf
+bin/
+obj/
+Debug/
+Release/

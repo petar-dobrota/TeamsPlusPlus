@@ -7,7 +7,12 @@
   <ServiceTypes>
     <!-- This is the name of your ServiceType. 
          This name must match the string used in RegisterServiceType call in Program.cs. -->
-    <StatefulServiceType ServiceTypeName="Chat.DataType"  HasPersistedState="true" />
+    <StatefulServiceType ServiceTypeName="Chat.DataType"  HasPersistedState="true" >
+      <LoadMetrics>        
+        <LoadMetric Name="RoomCount" Weight="High" PrimaryDefaultLoad="0" SecondaryDefaultLoad="0"/>
+        
+      </LoadMetrics>
+    </StatefulServiceType>
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
