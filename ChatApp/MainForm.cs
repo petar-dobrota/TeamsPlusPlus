@@ -13,18 +13,11 @@ namespace ChatApp
     public partial class MainForm : Form
     {
         private ChatRoomsModel roomsModel = ChatRoomsModel.Instance;
+        private LoginModel loginModel => LoginModel.Instance;
 
         public MainForm()
         {
             InitializeComponent();
-
-            lstChatMessages.DataBindings.GetType();
-            var s = lstChatMessages.Items.GetEnumerator();
-            s.Reset();
-            s.MoveNext();
-            var cr = s.Current;
-
-            int x = 0;
         }
 
         public async Task RedrawAsync()
@@ -34,13 +27,61 @@ namespace ChatApp
             RenderChatRoom(await roomsModel.GetSelectedChatRoomAsync());
         }
 
+        private string MessageToString(ChatMessage message)
+        {
+            string prefix = "";
+            if (message.senderUsed != loginModel.MyUserId)
+            {
+                prefix = " ->\t";
+            }
+
+            return $"{prefix}{message.senderUsed}:  {message.messageBody}";
+        }
+
         private void RenderChatRoom(ChatRoom room)
         {
-            lstChatMessages.DataSource = room.messages.ConvertAll(msgStruct => msgStruct.messageBody).ToList();
+            //lstChatMessages.DataSource = room.messages.ConvertAll(msgStruct => msgStruct.messageBody).ToList();
+            lstChatMessages.DataSource = room.messages.Select(msgStruct => MessageToString(msgStruct)).ToList();
             var ctl = lstChatMessages.Controls;
 
-
             lblSelectedRoom.Text = room.name + "";
+        }
+
+        private void SendMessage()
+        {
+            if (txtMyMessage.Text.Length > 0)
+            {
+                roomsModel.SendMessage(txtMyMessage.Text);
+                txtMyMessage.Text = "";
+            }
+        }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            SendMessage();
+        }
+
+        private void btnSend_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SendMessage();
+            } else if (e.KeyCode == Keys.Escape)
+            {
+                LoginModel.Instance.MyUserId = Prompt.ShowDialog("Login", "Enter username: ", LoginModel.Instance.MyUserId);
+            }
+        }
+
+        private void lstChatRooms_Click(object sender, EventArgs e)
+        {
+            string newRoomName = roomsModel.GetChatRoomNames()[lstChatRooms.SelectedIndex];
+            ChangeCurrentRoom(newRoomName);
+        }
+
+        private void ChangeCurrentRoom(string newRoomName)
+        {
+            roomsModel.SelectedRoomName = newRoomName;
+            lblSelectedRoom.Text = newRoomName;
         }
     }
 }

@@ -17,18 +17,21 @@ namespace ChatApp
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new TestForm());
-            //return;
+
+            LoginModel.Instance.MyUserId = Prompt.ShowDialog("Login", "Enter username: ");
 
             var mainForm = new MainForm();
             mainForm.FormClosed += (dummy1, dummy2) => Application.Exit();
             ChatRoomsModel.Instance.SubscribeOnMessage(newMessage =>
             {
-                if (!mainForm.IsDisposed) mainForm.Invoke((MethodInvoker)(async () => await mainForm.RedrawAsync()));
+                if (!mainForm.IsDisposed) mainForm.Invoke((MethodInvoker)(async () =>
+                {
+                    if (!mainForm.IsDisposed) await mainForm.RedrawAsync();
+                }));
             });
 
             Application.Run(mainForm);
-            
         }
+        
     }
 }

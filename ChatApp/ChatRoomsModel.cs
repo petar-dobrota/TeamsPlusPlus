@@ -11,24 +11,19 @@ namespace ChatApp
 {
     public struct ChatMessage
     {
-        public ChatMessage(string _senderUser, string _messageBody)
-        {
-            senderUsed = _senderUser;
-            messageBody = _messageBody;
-        }
-
-        public readonly string senderUsed;
-        public readonly string messageBody;
+        public string senderUsed;
+        public string messageBody;
     }
 
     public class ChatRoom
     {
         public ChatRoom()
         { }
+
         public ChatRoom(string name)
         {
             this.name = name;
-            this.messages = new List<ChatMessage>();
+            this.messages = new ChatMessage[0];
         }
 
         public string name;
@@ -36,7 +31,7 @@ namespace ChatApp
         /// <summary>
         /// Oldest message is at index 0
         /// </summary>
-        public List<ChatMessage> messages;
+        public ChatMessage[] messages;
     }
 
     public class ChatRoomsModel
@@ -45,74 +40,73 @@ namespace ChatApp
 
         private readonly HttpClient httpClient = new HttpClient();
 
+        private string serverAddress => loginModel.ServerAddress;
+
+        public string SelectedRoomName = "myroom";
+
+        private Action<ChatMessage> newMsgHandler = x => { };
+
+        private LoginModel loginModel => LoginModel.Instance;
+
         public ChatRoomsModel()
         {
             var t = new Thread(()=>
             {
                 while (true)
                 {
-                    newMsgHandler.Invoke(new ChatMessage("", ""));
-                    Thread.Sleep(1000);
+                    newMsgHandler.Invoke(new ChatMessage());
+                    Thread.Sleep(300);
                 }
             });
             t.IsBackground = true;
             t.Start();
         }
+
         public List<string> GetChatRoomNames()
         {
             // TODO: Get
             return new List<string>() { "myroom", "rum2", "rum3"};
         }
 
-        public ChatRoom GetChatRoom(string name)
+        public async Task<ChatRoom> GetChatRoomAsync(string roomName)
         {
-            return new ChatRoom(name);
-        }
-
-        private Action<ChatMessage> newMsgHandler = x => { };
-
-        public void SubscribeOnMessage(Action<ChatMessage> newMsgHandler) {
-            this.newMsgHandler = newMsgHandler ?? throw new ArgumentException();
-        }
-
-        public string GetSelectedChatRoomName()
-        {
-            return null;
-        }
-
-        private string selectedRoom = "myroom";
-
-        public async Task<ChatRoom> GetSelectedChatRoomAsync()
-        {
-            string proxyAddress = "http://localhost:8906";
-
-
-            string proxyUrl = $"{proxyAddress}/api/room/{selectedRoom}";
+            string proxyUrl = $"{serverAddress}/api/room/{roomName}";
 
             using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
             {
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     // TODO: handle error
+                    return new ChatRoom("ERROR");
                 }
 
-                var resp = await response.Content.ReadAsStringAsync();
-                var cr = JsonConvert.DeserializeObject<ChatRoom>(resp);
-                return cr;
+                var rawResponse = await response.Content.ReadAsStringAsync();
+                var chatRoomResponse = JsonConvert.DeserializeObject<ChatRoom>(rawResponse);
+                return chatRoomResponse;
             }
-
-
-
-            var room = new ChatRoom("myRandomChatRoom");
-            for (int i =0;i<10;i++)
-            {
-                room.messages.Add(new ChatMessage("senderX", "Messageeee  sasff num " + i));
-            }
-
-            return room;
         }
 
-        public void SetSelectedRoom(string roomName) { }
+        public void SubscribeOnMessage(Action<ChatMessage> newMsgHandler) {
+            this.newMsgHandler += newMsgHandler ?? throw new NullReferenceException();
+        }
+        
+        public async Task<ChatRoom> GetSelectedChatRoomAsync()
+        {
+            return await GetChatRoomAsync(SelectedRoomName);
+        }
+
+        public void SendMessage(string message)
+        {
+            var newMessageStruct = new ChatMessage();
+            newMessageStruct.senderUsed = loginModel.MyUserId;
+            newMessageStruct.messageBody = message;
+
+            string proxyUrl = $"{serverAddress}/api/room/{SelectedRoomName}/?user={loginModel.MyUserId}";
+
+            StringContent content = new StringContent($"\"{message}\"", Encoding.UTF8, "application/json");
+            
+            Task dummy = this.httpClient.PostAsync(proxyUrl, content);
+        }
 
     }
 }

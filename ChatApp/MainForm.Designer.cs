@@ -34,6 +34,7 @@
             this.lblSelectedRoom = new System.Windows.Forms.Label();
             this.btnSend = new System.Windows.Forms.Button();
             this.txtMyMessage = new System.Windows.Forms.TextBox();
+            this.btnJoinRoom = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstChatRooms
@@ -50,8 +51,10 @@
             "SF"});
             this.lstChatRooms.Location = new System.Drawing.Point(12, 36);
             this.lstChatRooms.Name = "lstChatRooms";
-            this.lstChatRooms.Size = new System.Drawing.Size(180, 404);
+            this.lstChatRooms.Size = new System.Drawing.Size(180, 340);
             this.lstChatRooms.TabIndex = 1;
+            this.lstChatRooms.Click += new System.EventHandler(this.lstChatRooms_Click);
+            this.lstChatRooms.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
             // 
             // lblChatRooms
             // 
@@ -67,7 +70,9 @@
             this.lstChatMessages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstChatMessages.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstChatMessages.FormattingEnabled = true;
+            this.lstChatMessages.ItemHeight = 16;
             this.lstChatMessages.Items.AddRange(new object[] {
             "Random poruka 1",
             "Rsdkasnfcdnjnciddddddddddddddddddddddd",
@@ -76,8 +81,10 @@
             "another message :D"});
             this.lstChatMessages.Location = new System.Drawing.Point(198, 36);
             this.lstChatMessages.Name = "lstChatMessages";
-            this.lstChatMessages.Size = new System.Drawing.Size(590, 355);
+            this.lstChatMessages.Size = new System.Drawing.Size(590, 340);
             this.lstChatMessages.TabIndex = 3;
+            this.lstChatMessages.TabStop = false;
+            this.lstChatMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
             // 
             // lblSelectedRoom
             // 
@@ -100,6 +107,8 @@
             this.btnSend.TabIndex = 5;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.btnSend.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
             // 
             // txtMyMessage
             // 
@@ -110,12 +119,23 @@
             this.txtMyMessage.Size = new System.Drawing.Size(515, 20);
             this.txtMyMessage.TabIndex = 6;
             this.txtMyMessage.Text = "nova porukaa... typing";
+            this.txtMyMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
+            // 
+            // btnJoinRoom
+            // 
+            this.btnJoinRoom.Location = new System.Drawing.Point(12, 382);
+            this.btnJoinRoom.Name = "btnJoinRoom";
+            this.btnJoinRoom.Size = new System.Drawing.Size(180, 23);
+            this.btnJoinRoom.TabIndex = 7;
+            this.btnJoinRoom.Text = "Join/Create new Room";
+            this.btnJoinRoom.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnJoinRoom);
             this.Controls.Add(this.txtMyMessage);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lblSelectedRoom);
@@ -138,6 +158,7 @@
         private System.Windows.Forms.Label lblSelectedRoom;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.TextBox txtMyMessage;
+        private System.Windows.Forms.Button btnJoinRoom;
     }
 }
 
