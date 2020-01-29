@@ -11,9 +11,6 @@
     <Parameter Name="ChatData_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="ChatData_PartitionCount" DefaultValue="1" />
     <Parameter Name="ChatData_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="HelloStatefulWorld_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="HelloStatefulWorld_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="HelloStatefulWorld_PartitionCount" DefaultValue="26" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -36,10 +33,6 @@
     <ServiceManifestRef ServiceManifestName="ChatDataPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
   </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="HelloStatefulWorldPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-  </ServiceManifestImport>
   <DefaultServices>
     <!-- The section below creates instances of service types, when an instance of this 
          application type is created. You can also create one or more instances of service type using the 
@@ -54,18 +47,12 @@
     <Service Name="Chat.Data" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="Chat.DataType" TargetReplicaSetSize="[Chat.Data_TargetReplicaSetSize]" MinReplicaSetSize="[Chat.Data_MinReplicaSetSize]">
         <!-- <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-2147483648" HighKey="2147483647" />-->
-        <!-- <UniformInt64Partition PartitionCount="[HelloStatefulWorld_PartitionCount]" LowKey="0" HighKey="25" Chat.Data_PartitionCount/> -->
         <UniformInt64Partition PartitionCount="4" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
     <Service Name="ChatData" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="ChatDataType" TargetReplicaSetSize="[ChatData_TargetReplicaSetSize]" MinReplicaSetSize="[ChatData_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
-      </StatefulService>
-    </Service>
-    <Service Name="HelloStatefulWorld" ServicePackageActivationMode="ExclusiveProcess">
-      <StatefulService ServiceTypeName="HelloStatefulWorldType" TargetReplicaSetSize="[HelloStatefulWorld_TargetReplicaSetSize]" MinReplicaSetSize="[HelloStatefulWorld_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="1" LowKey="0" HighKey="25" />
       </StatefulService>
     </Service>
   </DefaultServices>

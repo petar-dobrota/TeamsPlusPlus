@@ -10,8 +10,5 @@
     <Parameter Name="ChatData_PartitionCount" Value="1" />
     <Parameter Name="ChatData_MinReplicaSetSize" Value="1" />
     <Parameter Name="ChatData_TargetReplicaSetSize" Value="1" />
-    <Parameter Name="HelloStatefulWorld_PartitionCount" Value="1" />
-    <Parameter Name="HelloStatefulWorld_MinReplicaSetSize" Value="1" />
-    <Parameter Name="HelloStatefulWorld_TargetReplicaSetSize" Value="1" />
   </Parameters>
 </Application>

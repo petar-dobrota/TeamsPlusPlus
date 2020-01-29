@@ -37,7 +37,6 @@
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>
     <ProjectReference Include="..\ChatData\ChatData.csproj" />
-    <ProjectReference Include="..\HelloStatefulWorld\HelloStatefulWorld.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>
