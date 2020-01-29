@@ -53,8 +53,8 @@
             this.lstChatRooms.Name = "lstChatRooms";
             this.lstChatRooms.Size = new System.Drawing.Size(180, 340);
             this.lstChatRooms.TabIndex = 1;
-            this.lstChatRooms.Click += new System.EventHandler(this.lstChatRooms_Click);
-            this.lstChatRooms.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
+            this.lstChatRooms.Click += new System.EventHandler(this.lstChatRooms_ClickAsync);
+            this.lstChatRooms.KeyDown += new System.Windows.Forms.KeyEventHandler(this.global_KeyDown);
             // 
             // lblChatRooms
             // 
@@ -84,7 +84,7 @@
             this.lstChatMessages.Size = new System.Drawing.Size(590, 340);
             this.lstChatMessages.TabIndex = 3;
             this.lstChatMessages.TabStop = false;
-            this.lstChatMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
+            this.lstChatMessages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.global_KeyDown);
             // 
             // lblSelectedRoom
             // 
@@ -108,7 +108,7 @@
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            this.btnSend.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
+            this.btnSend.KeyDown += new System.Windows.Forms.KeyEventHandler(this.global_KeyDown);
             // 
             // txtMyMessage
             // 
@@ -119,16 +119,18 @@
             this.txtMyMessage.Size = new System.Drawing.Size(515, 20);
             this.txtMyMessage.TabIndex = 6;
             this.txtMyMessage.Text = "nova porukaa... typing";
-            this.txtMyMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSend_KeyDown);
+            this.txtMyMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.global_KeyDown);
             // 
             // btnJoinRoom
             // 
+            this.btnJoinRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnJoinRoom.Location = new System.Drawing.Point(12, 382);
             this.btnJoinRoom.Name = "btnJoinRoom";
             this.btnJoinRoom.Size = new System.Drawing.Size(180, 23);
             this.btnJoinRoom.TabIndex = 7;
             this.btnJoinRoom.Text = "Join/Create new Room";
             this.btnJoinRoom.UseVisualStyleBackColor = true;
+            this.btnJoinRoom.Click += new System.EventHandler(this.btnJoinRoom_Click);
             // 
             // MainForm
             // 

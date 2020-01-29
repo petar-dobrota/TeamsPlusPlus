@@ -22,11 +22,13 @@ namespace Chat.Data
     internal sealed class Data : StatefulService
     {
         private readonly RoomService roomService;
+        private readonly UserService userService;
 
         public Data(StatefulServiceContext context)
             : base(context)
         {
             roomService = new RoomService(new ChatRoomReliableRepository(StateManager));
+            userService = new UserService(new UserRepository());
         }
 
         protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
@@ -74,6 +76,7 @@ namespace Chat.Data
                                             .AddSingleton(serviceContext)
                                             .AddSingleton(new FabricClient())
                                             .AddSingleton(roomService)
+                                            .AddSingleton(userService)
                                             .AddSingleton(this.StateManager))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()

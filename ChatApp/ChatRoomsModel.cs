@@ -34,6 +34,11 @@ namespace ChatApp
         public ChatMessage[] messages;
     }
 
+    public class UserInfo
+    {
+        public string[] joinedRooms;
+    }
+
     public class ChatRoomsModel
     {
         public static readonly ChatRoomsModel Instance = new ChatRoomsModel();
@@ -42,14 +47,24 @@ namespace ChatApp
 
         private string serverAddress => loginModel.ServerAddress;
 
-        public string SelectedRoomName = "myroom";
+        public string SelectedRoomName;
 
         private Action<ChatMessage> newMsgHandler = x => { };
 
         private LoginModel loginModel => LoginModel.Instance;
 
+        private HashSet<string> joindedRooms;
+
+        public void Reset()
+        {
+            joindedRooms = null;
+            SelectedRoomName = "public";
+        }
+
         public ChatRoomsModel()
         {
+            Reset();
+
             var t = new Thread(()=>
             {
                 while (true)
@@ -62,10 +77,29 @@ namespace ChatApp
             t.Start();
         }
 
-        public List<string> GetChatRoomNames()
+        public async Task<List<string>> GetChatRoomNamesAsync()
         {
-            // TODO: Get
-            return new List<string>() { "myroom", "rum2", "rum3"};
+            if (joindedRooms == null)
+            {
+                string proxyUrl = $"{serverAddress}/api/user/{loginModel.MyUserId}/";
+
+                using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        // TODO: handle error
+                    }
+
+                    var rawResponse = await response.Content.ReadAsStringAsync();
+                    var userInfo = JsonConvert.DeserializeObject<UserInfo>(rawResponse);
+
+                    joindedRooms = new HashSet<string>(userInfo.joinedRooms);
+                }
+            }
+            
+            List<string> rooms = new List<string>(joindedRooms);
+            rooms.Sort();
+            return rooms;
         }
 
         public async Task<ChatRoom> GetChatRoomAsync(string roomName)
@@ -108,5 +142,14 @@ namespace ChatApp
             Task dummy = this.httpClient.PostAsync(proxyUrl, content);
         }
 
+        public void JoinRoom(string newRoomName)
+        {
+            string proxyUrl = $"{serverAddress}/api/user/{loginModel.MyUserId}/joinRoom?roomName={newRoomName}";
+            //StringContent content = new StringContent($"\"{message}\"", Encoding.UTF8, "application/json");
+            Task dummy = this.httpClient.PutAsync(proxyUrl, null);
+
+            joindedRooms?.Add(newRoomName);
+            SelectedRoomName = newRoomName;
+        }
     }
 }

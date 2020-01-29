@@ -18,7 +18,8 @@ namespace ChatApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            LoginModel.Instance.MyUserId = Prompt.ShowDialog("Login", "Enter username: ");
+            var userId = Prompt.ShowDialog("Login", "Enter username: ", LoginModel.Instance.MyUserId);
+            LoginModel.Instance.LoginAs(userId);
 
             var mainForm = new MainForm();
             mainForm.FormClosed += (dummy1, dummy2) => Application.Exit();

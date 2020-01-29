@@ -10,8 +10,16 @@ namespace ChatApp
     {
         public static readonly LoginModel Instance = new LoginModel();
 
-        public string MyUserId = "myUserId";
+        private ChatRoomsModel chatRoomsModel = ChatRoomsModel.Instance;
+
+        public string MyUserId { get; private set; } = "myUserId";
 
         public string ServerAddress { get; private set; } = "http://localhost:8906";
+
+        public void LoginAs(string userId)
+        {
+            MyUserId = userId;
+            chatRoomsModel.Reset();
+        }
     }
 }

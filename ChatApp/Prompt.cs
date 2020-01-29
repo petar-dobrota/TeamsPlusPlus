@@ -9,7 +9,7 @@ namespace ChatApp
 {
     public static class Prompt
     {
-        public static string ShowDialog(string text, string caption, string initialValue = "")
+        public static string ShowDialog(string caption, string text, string initialValue = "")
         {
             Form prompt = new Form()
             {
@@ -22,7 +22,7 @@ namespace ChatApp
             Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
             TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
             textBox.Text = initialValue;
-            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 80, DialogResult = DialogResult.OK };
             confirmation.Click += (sender, e) => { prompt.Close(); };
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);
