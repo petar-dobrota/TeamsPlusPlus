@@ -11,7 +11,6 @@
     <Parameter Name="ChatData_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="ChatData_PartitionCount" DefaultValue="1" />
     <Parameter Name="ChatData_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Alphabet.Web_InstanceCount" DefaultValue="-1" />
     <Parameter Name="HelloStatefulWorld_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="HelloStatefulWorld_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="HelloStatefulWorld_PartitionCount" DefaultValue="26" />
@@ -35,10 +34,6 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ChatDataPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="Alphabet.WebPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
   </ServiceManifestImport>
   <ServiceManifestImport>
@@ -67,11 +62,6 @@
       <StatefulService ServiceTypeName="ChatDataType" TargetReplicaSetSize="[ChatData_TargetReplicaSetSize]" MinReplicaSetSize="[ChatData_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
-    </Service>
-    <Service Name="Alphabet.Web" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="Alphabet.WebType" InstanceCount="[Alphabet.Web_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
     </Service>
     <Service Name="HelloStatefulWorld" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="HelloStatefulWorldType" TargetReplicaSetSize="[HelloStatefulWorld_TargetReplicaSetSize]" MinReplicaSetSize="[HelloStatefulWorld_MinReplicaSetSize]">

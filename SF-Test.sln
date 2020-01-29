@@ -7,8 +7,6 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "SF_Test", "SF-Test\SF_Test.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloStatefulWorld", "HelloStatefulWorld\HelloStatefulWorld.csproj", "{7EB2E618-3777-4312-A076-97D8F25E3422}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alphabet.Web", "Alphabet.Web\Alphabet.Web.csproj", "{72BA912A-B902-4713-BF8B-6642D1CA2BD5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatData", "ChatData\ChatData.csproj", "{6E9E2163-07E2-4712-9C71-3C56F65CC930}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Data", "Chat.Data\Chat.Data.csproj", "{D95E8ADB-1A75-454A-94F5-7A1B46AA8C94}"
