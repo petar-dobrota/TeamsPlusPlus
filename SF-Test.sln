@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Data", "Chat.Data\Chat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Web", "Chat.Web\Chat.Web.csproj", "{86FB0B86-3490-4782-BF01-4F7D1BE8EA4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp", "ChatApp\ChatApp.csproj", "{F86DF3E3-3F90-45F0-80A8-AFA65E02627C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamsPlusPlus", "ChatApp\TeamsPlusPlus.csproj", "{F86DF3E3-3F90-45F0-80A8-AFA65E02627C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
