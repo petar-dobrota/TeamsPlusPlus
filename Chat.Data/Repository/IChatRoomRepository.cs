@@ -8,7 +8,7 @@ namespace Chat.Data
     public interface IChatRoomRepository
     {
         Task AddMessageAsync(string roomName, ChatMessage chatMessage, CancellationToken cancellationToken);
-        Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken);
+        Task<ChatRoom> GetRoomAsync(string roomName, CancellationToken cancellationToken);
 
         Task<int> GetRoomCountAsync(CancellationToken cancellationToken);
     }

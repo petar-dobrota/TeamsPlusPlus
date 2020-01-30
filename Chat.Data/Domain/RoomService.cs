@@ -1,9 +1,4 @@
 ﻿using Chat.Data.Controllers;
-using Chat.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Fabric;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,17 +11,17 @@ namespace Chat.Data.Domain
 
         public RoomService(IChatRoomRepository chatRoomRepository)
         {
-            this.chatRoomRepo = chatRoomRepository;
+            chatRoomRepo = chatRoomRepository;
         }
 
         public Task<ChatRoom> GetRoom(string roomName, CancellationToken cancellationToken)
         {
-            return chatRoomRepo.GetRoomAsync(roomName, 10, cancellationToken);
+            return chatRoomRepo.GetRoomAsync(roomName, cancellationToken);
         }
 
         public async Task SendMessage(string room, string user, string message, CancellationToken cancellationToken)
         {
-            ChatRoom roomStruct = await chatRoomRepo.GetRoomAsync(room, 0, cancellationToken);
+            ChatRoom roomStruct = await chatRoomRepo.GetRoomAsync(room, cancellationToken);
             if (roomStruct == null)
             {
                 // lazy create room

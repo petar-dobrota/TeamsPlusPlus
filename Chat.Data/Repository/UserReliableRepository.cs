@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Chat.Data.Domain;
 using Microsoft.ServiceFabric.Data;
@@ -40,14 +37,14 @@ namespace Chat.Data.Repository
             this.stateManager = stateManager;
         }
 
-        private async Task<IReliableDictionary<string, UserInfoEntity>> GetUserStatesByIdAsync()
+        private async Task<IReliableDictionary<string, UserInfoEntity>> GetUserStatesByIdMapAsync()
         {
             return await stateManager.GetOrAddAsync<IReliableDictionary<string, UserInfoEntity>>("userInfoMap");
         }
 
         public async Task<UserInfo> GetUserInfoAsync(string userId, CancellationToken cancellationToken)
         {
-            var userMap = await GetUserStatesByIdAsync();
+            var userMap = await GetUserStatesByIdMapAsync();
             using (var tx = stateManager.CreateTransaction())
             {
                 var userConditional = await userMap.TryGetValueAsync(tx, userId);
@@ -58,7 +55,7 @@ namespace Chat.Data.Repository
         public async Task PersistAsync(UserInfo newInfo, CancellationToken cancellationToken)
         {
             var userEntity = ToEntity(newInfo);
-            var userMap = await GetUserStatesByIdAsync();
+            var userMap = await GetUserStatesByIdMapAsync();
             using (var tx = stateManager.CreateTransaction())
             {
                 await userMap.AddOrUpdateAsync(tx, newInfo.userId, userEntity, (key, originalEntity) => userEntity);

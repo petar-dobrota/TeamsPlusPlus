@@ -50,7 +50,7 @@ namespace Chat.Web.Controllers
             {
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    // TODO: handle error
+                    return new StatusCodeResult((int) response.StatusCode);
                 }
 
                 var resp = await response.Content.ReadAsStringAsync();
@@ -58,7 +58,6 @@ namespace Chat.Web.Controllers
             }
         }
 
-        // string proxyUrl = $"{serverAddress}/api/user/{loginModel.MyUserId}/joinRoom?roomName={newRoomName}";
         [HttpPut("{userId}/joinRoom")]
         public async Task<ActionResult> JoinRoom(string userId, [FromQuery] string roomName)
         {
@@ -72,7 +71,7 @@ namespace Chat.Web.Controllers
             {
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    // TODO: handle error
+                    return new StatusCodeResult((int)response.StatusCode);
                 }
 
                 var resp = await response.Content.ReadAsStringAsync();

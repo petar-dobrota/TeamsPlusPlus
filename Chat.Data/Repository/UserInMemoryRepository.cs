@@ -7,17 +7,16 @@ using Chat.Data.Domain;
 
 namespace Chat.Data.Repository
 {
+    /// <summary>
+    /// For testing purposes.
+    /// </summary>
     public class UserInMemoryRepository : IUserRepository
     {
+        private Dictionary<string, UserInfo> userInfos = new Dictionary<string, UserInfo>();
+
         public UserInMemoryRepository()
         {
-            var dummyUser = new UserInfo("myUserId");
-            dummyUser.joinedRooms.Add("public");
-            dummyUser.joinedRooms.Add("myroom");
-            userInfos[dummyUser.userId] = dummyUser;
         }
-
-        private Dictionary<string, UserInfo> userInfos = new Dictionary<string, UserInfo>();
 
         public Task<UserInfo> GetUserInfoAsync(string userId, CancellationToken cancellationToken)
         {

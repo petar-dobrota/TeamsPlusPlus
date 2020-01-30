@@ -12,17 +12,10 @@ namespace Chat.Data
 
         private readonly Dictionary<string, ChatRoom> roomsByName = new Dictionary<string, ChatRoom>();
 
-        public Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken)
+        public Task<ChatRoom> GetRoomAsync(string roomName, CancellationToken cancellationToken)
         {
-
-            if (roomsByName.TryGetValue(roomName,out var room))
-            {
-                int size = room.messages.Count;
-                // TODO: truncate
-                return Task.FromResult(room);
-            }
-
-            return Task.FromResult((ChatRoom) null);
+            roomsByName.TryGetValue(roomName, out var room);
+            return Task.FromResult(room);
         }
 
         public Task AddMessageAsync(string roomName, ChatMessage chatMessage, CancellationToken cancellationToken)
@@ -35,7 +28,6 @@ namespace Chat.Data
             }
 
             room.messages.Add(chatMessage);
-            
             return Task.CompletedTask;
         }
 

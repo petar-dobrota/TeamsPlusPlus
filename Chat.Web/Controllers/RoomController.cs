@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Chat.Web
 {
     [Route("api/[controller]")]
@@ -22,7 +21,6 @@ namespace Chat.Web
 
         /// <summary>
         /// Constructs a reverse proxy URL for a given service.
-        /// Example: http://localhost:19081/VotingApplication/VotingData/
         /// </summary>
         private Uri GetProxyAddress(Uri serviceName)
         {
@@ -54,7 +52,7 @@ namespace Chat.Web
             {
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    // TODO: handle error
+                    return new StatusCodeResult((int)response.StatusCode);
                 }
 
                 var resp = await response.Content.ReadAsStringAsync();
@@ -72,8 +70,7 @@ namespace Chat.Web
             string proxyUrl = $"{proxyAddress}/api/room/{room}/?user={user}&PartitionKey={partitionKey}&PartitionKind=Int64Range";
             
             StringContent content = new StringContent($"\"{message}\"".ToString(), Encoding.UTF8, "application/json");
-            //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
+           
             using (HttpResponseMessage response = await this.httpClient.PostAsync(proxyUrl, content))
             {
                 return new ContentResult()

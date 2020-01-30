@@ -36,16 +36,15 @@ namespace Chat.Data.Repository
                 if (msgCount == 0)
                 {
                     // new room, increment counter
-                    await IncrementRoomCountAsync(1, cancellationToken);
+                    await IncrementRoomCountAsync(1, cancellationToken, tx);
                 }
 
                 await room.EnqueueAsync(tx, chatMessage);
                 await tx.CommitAsync();
             }
-            
         }
 
-        public async Task<ChatRoom> GetRoomAsync(string roomName, int historySize, CancellationToken cancellationToken)
+        public async Task<ChatRoom> GetRoomAsync(string roomName, CancellationToken cancellationToken)
         {
             IReliableQueue<ChatMessage> room = await GetRoomQueue(roomName);
 
@@ -54,35 +53,29 @@ namespace Chat.Data.Repository
             using (var tx = stateManager.CreateTransaction())
             {
                 var roomIterator = (await room.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
-                // roomIterator.Reset(); ?!
                 
                 while(await roomIterator.MoveNextAsync(cancellationToken))
                 {
                     var msg = roomIterator.Current;
                     chatRoom.messages.Add(msg);
                 }
-
             }
 
             return chatRoom;
         }
 
-        private async Task<int> IncrementRoomCountAsync(int increment, CancellationToken cancellationToken)
+        private async Task<int> IncrementRoomCountAsync(int increment, CancellationToken cancellationToken, ITransaction tx)
         {
+            // queue should contain single element which is room count
+            var roomCountQueue = await stateManager.GetOrAddAsync<IReliableQueue<int>>("roomCount");
+            var roomCountConditional = await roomCountQueue.TryDequeueAsync(tx);
 
-            using (var tx = stateManager.CreateTransaction())
-            {
-                // queue should contain single element which is room count
-                var roomCountQueue = await stateManager.GetOrAddAsync<IReliableQueue<int>>("roomCount");
-                var roomCountConditional = await roomCountQueue.TryDequeueAsync(tx);
+            int newCount = (roomCountConditional.HasValue ? roomCountConditional.Value : 0) + increment;
+            await roomCountQueue.EnqueueAsync(tx, newCount);
 
-                int newCount = (roomCountConditional.HasValue ? roomCountConditional.Value : 0) + increment;
-                await roomCountQueue.EnqueueAsync(tx, newCount);
+            await tx.CommitAsync();
 
-                await tx.CommitAsync();
-
-                return newCount;
-            }
+            return newCount;
         }
         
         public async Task<int> GetRoomCountAsync(CancellationToken cancellationToken)
@@ -91,17 +84,14 @@ namespace Chat.Data.Repository
             {
                 // queue should contain single element which is room count
                 var roomCountQueueOptional = await stateManager.TryGetAsync<IReliableQueue<int>>("roomCount");
-                if (!roomCountQueueOptional.HasValue)
+
+                if (!roomCountQueueOptional.HasValue || (await roomCountQueueOptional.Value.GetCountAsync(tx)) == 0)
                 {
-                    return 0;
-                }
-                var roomCountQueue = roomCountQueueOptional.Value;
-                if ((await roomCountQueue.GetCountAsync(tx)) == 0)
-                {
+                    // if queue doesn't exist, that means none of chat rooms were created
                     return 0;
                 }
 
-                var it =  (await roomCountQueue.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
+                var it =  (await roomCountQueueOptional.Value.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
                 await it.MoveNextAsync(cancellationToken);
                 return it.Current;
             }

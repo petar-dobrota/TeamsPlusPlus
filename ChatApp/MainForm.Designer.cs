@@ -146,7 +146,7 @@
             this.Controls.Add(this.lstChatRooms);
             this.MinimumSize = new System.Drawing.Size(816, 489);
             this.Name = "MainForm";
-            this.Text = "Microsoft Teams++";
+            this.Text = "ChatSoft Teams++";
             this.ResumeLayout(false);
             this.PerformLayout();
 
