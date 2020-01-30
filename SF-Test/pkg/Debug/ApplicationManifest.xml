@@ -8,9 +8,6 @@
     <Parameter Name="Chat.Data_PartitionCount" DefaultValue="1" />
     <Parameter Name="Chat.Data_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Chat.Data_Metrics" DefaultValue="@(&quot;ConnectionCount,High,20,5&quot;,&quot;PrimaryCount,Medium,1,0&quot;,&quot;ReplicaCount,Low,1,1&quot;,&quot;Count,Low,1,1&quot;)" />
-    <Parameter Name="ChatData_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="ChatData_PartitionCount" DefaultValue="1" />
-    <Parameter Name="ChatData_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -29,10 +26,6 @@
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Chat.Data_ASPNETCORE_ENVIRONMENT]" />
     </EnvironmentOverrides>
   </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="ChatDataPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-  </ServiceManifestImport>
   <DefaultServices>
     <!-- The section below creates instances of service types, when an instance of this 
          application type is created. You can also create one or more instances of service type using the 
@@ -46,13 +39,7 @@
     </Service>
     <Service Name="Chat.Data" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="Chat.DataType" TargetReplicaSetSize="[Chat.Data_TargetReplicaSetSize]" MinReplicaSetSize="[Chat.Data_MinReplicaSetSize]">
-        <!-- <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-2147483648" HighKey="2147483647" />-->
         <UniformInt64Partition PartitionCount="4" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
-      </StatefulService>
-    </Service>
-    <Service Name="ChatData" ServicePackageActivationMode="ExclusiveProcess">
-      <StatefulService ServiceTypeName="ChatDataType" TargetReplicaSetSize="[ChatData_TargetReplicaSetSize]" MinReplicaSetSize="[ChatData_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="[ChatData_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
   </DefaultServices>

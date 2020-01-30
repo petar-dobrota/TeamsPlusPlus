@@ -7,8 +7,5 @@
     <Parameter Name="Chat.Data_PartitionCount" Value="1" />
     <Parameter Name="Chat.Data_MinReplicaSetSize" Value="1" />
     <Parameter Name="Chat.Data_TargetReplicaSetSize" Value="1" />
-    <Parameter Name="ChatData_PartitionCount" Value="1" />
-    <Parameter Name="ChatData_MinReplicaSetSize" Value="1" />
-    <Parameter Name="ChatData_TargetReplicaSetSize" Value="1" />
   </Parameters>
 </Application>

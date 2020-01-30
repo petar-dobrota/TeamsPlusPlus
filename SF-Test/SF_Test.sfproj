@@ -36,7 +36,6 @@
     <ProjectReference Include="..\Chat.Web\Chat.Web.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>
-    <ProjectReference Include="..\ChatData\ChatData.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>
