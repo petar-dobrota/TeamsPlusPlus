@@ -7,9 +7,9 @@ using Chat.Data.Domain;
 
 namespace Chat.Data.Repository
 {
-    public class UserRepository
+    public class UserInMemoryRepository : IUserRepository
     {
-        public UserRepository()
+        public UserInMemoryRepository()
         {
             var dummyUser = new UserInfo("myUserId");
             dummyUser.joinedRooms.Add("public");

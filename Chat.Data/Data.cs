@@ -28,7 +28,7 @@ namespace Chat.Data
             : base(context)
         {
             roomService = new RoomService(new ChatRoomReliableRepository(StateManager));
-            userService = new UserService(new UserRepository());
+            userService = new UserService(new UserReliableRepository(StateManager));
         }
 
         protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
