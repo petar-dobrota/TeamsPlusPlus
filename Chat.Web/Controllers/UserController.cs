@@ -18,13 +18,15 @@ namespace Chat.Web.Controllers
         private readonly FabricClient fabricClient;
         private readonly string reverseProxyBaseUri;
         private readonly StatelessServiceContext serviceContext;
+        private readonly EventCounter requestCounter;
 
-        public UserController(HttpClient httpClient, StatelessServiceContext context, FabricClient fabricClient)
+        public UserController(HttpClient httpClient, StatelessServiceContext context, FabricClient fabricClient, EventCounter requestCounter)
         {
             this.fabricClient = fabricClient;
             this.httpClient = httpClient;
             this.serviceContext = context;
             this.reverseProxyBaseUri = Environment.GetEnvironmentVariable("ReverseProxyBaseUri");
+            this.requestCounter = requestCounter;
         }
 
         private Uri GetProxyAddress(Uri serviceName)
@@ -40,42 +42,60 @@ namespace Chat.Web.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult> GetUserInfo(string userId)
         {
-            Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
-            Uri proxyAddress = GetProxyAddress(serviceName);
-            long partitionKey = GetPartitionKey(userId);
-
-            string proxyUrl = $"{proxyAddress}/api/user/{userId}?PartitionKey={partitionKey}&PartitionKind=Int64Range";
-
-            using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+            try
             {
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    return new StatusCodeResult((int) response.StatusCode);
-                }
+                requestCounter.SignalEventOccured();
 
-                var resp = await response.Content.ReadAsStringAsync();
-                return Ok(resp);
+                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri proxyAddress = GetProxyAddress(serviceName);
+                long partitionKey = GetPartitionKey(userId);
+
+                string proxyUrl = $"{proxyAddress}/api/user/{userId}?PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+                using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        return new StatusCodeResult((int)response.StatusCode);
+                    }
+
+                    var resp = await response.Content.ReadAsStringAsync();
+                    return Ok(resp);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
         [HttpPut("{userId}/joinRoom")]
         public async Task<ActionResult> JoinRoom(string userId, [FromQuery] string roomName)
         {
-            Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
-            Uri proxyAddress = GetProxyAddress(serviceName);
-            long partitionKey = GetPartitionKey(userId);
-
-            string proxyUrl = $"{proxyAddress}/api/user/{userId}/joinRoom?roomName={roomName}&PartitionKey={partitionKey}&PartitionKind=Int64Range";
-
-            using (HttpResponseMessage response = await this.httpClient.PutAsync(proxyUrl, null))
+            try
             {
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    return new StatusCodeResult((int)response.StatusCode);
-                }
+                requestCounter.SignalEventOccured();
 
-                var resp = await response.Content.ReadAsStringAsync();
-                return Ok(resp);
+                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri proxyAddress = GetProxyAddress(serviceName);
+                long partitionKey = GetPartitionKey(userId);
+
+                string proxyUrl = $"{proxyAddress}/api/user/{userId}/joinRoom?roomName={roomName}&PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+                using (HttpResponseMessage response = await this.httpClient.PutAsync(proxyUrl, null))
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        return new StatusCodeResult((int)response.StatusCode);
+                    }
+
+                    var resp = await response.Content.ReadAsStringAsync();
+                    return Ok(resp);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

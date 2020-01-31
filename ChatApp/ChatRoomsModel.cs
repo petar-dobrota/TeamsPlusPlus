@@ -49,7 +49,7 @@ namespace TeamsPlusPlus
 
         public string SelectedRoomName;
 
-        private Action<ChatMessage> newMsgHandler = x => { };
+        private Action dataChangedListener = () => { };
 
         private LoginModel loginModel => LoginModel.Instance;
 
@@ -69,7 +69,7 @@ namespace TeamsPlusPlus
             {
                 while (true)
                 {
-                    newMsgHandler.Invoke(new ChatMessage());
+                    dataChangedListener.Invoke();
                     Thread.Sleep(300);
                 }
             });
@@ -120,8 +120,8 @@ namespace TeamsPlusPlus
             }
         }
 
-        public void SubscribeOnMessage(Action<ChatMessage> newMsgHandler) {
-            this.newMsgHandler += newMsgHandler ?? throw new NullReferenceException();
+        public void SubscribeOnDataChanged(Action newMsgHandler) {
+            dataChangedListener += newMsgHandler ?? throw new NullReferenceException();
         }
         
         public async Task<ChatRoom> GetSelectedChatRoomAsync()

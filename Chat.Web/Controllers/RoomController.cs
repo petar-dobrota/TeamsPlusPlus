@@ -18,6 +18,7 @@ namespace Chat.Web
         private readonly FabricClient fabricClient;
         private readonly string reverseProxyBaseUri;
         private readonly StatelessServiceContext serviceContext;
+        private readonly EventCounter requestCounter;
 
         /// <summary>
         /// Constructs a reverse proxy URL for a given service.
@@ -32,52 +33,72 @@ namespace Chat.Web
             return Util.Hash64(name);
         }
 
-        public RoomController(HttpClient httpClient, StatelessServiceContext context, FabricClient fabricClient)
+        public RoomController(HttpClient httpClient, StatelessServiceContext context, FabricClient fabricClient, EventCounter requestCounter)
         {
             this.fabricClient = fabricClient;
             this.httpClient = httpClient;
             this.serviceContext = context;
             this.reverseProxyBaseUri = Environment.GetEnvironmentVariable("ReverseProxyBaseUri");
+            this.requestCounter = requestCounter;
         }
 
         [HttpGet("{room}")]
-        public async Task<ActionResult> GetRoom(string room) {
-            Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
-            Uri proxyAddress = GetProxyAddress(serviceName);
-            long partitionKey = GetPartitionKey(room);
-
-            string proxyUrl = $"{proxyAddress}/api/room/{room}?PartitionKey={partitionKey}&PartitionKind=Int64Range";
-
-            using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+        public async Task<ActionResult> GetRoom(string room)
+        {
+            try
             {
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    return new StatusCodeResult((int)response.StatusCode);
-                }
+                requestCounter.SignalEventOccured();
 
-                var resp = await response.Content.ReadAsStringAsync();
-                return Ok(resp);
+                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri proxyAddress = GetProxyAddress(serviceName);
+                long partitionKey = GetPartitionKey(room);
+
+                string proxyUrl = $"{proxyAddress}/api/room/{room}?PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+                using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        return new StatusCodeResult((int)response.StatusCode);
+                    }
+
+                    var resp = await response.Content.ReadAsStringAsync();
+                    return Ok(resp);
+                }
             }
-            
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         [HttpPost("{room}")]
-        public async Task<ActionResult> SendMessage(string room, string user, [FromBody] string message) {
-            Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
-            Uri proxyAddress = GetProxyAddress(serviceName);
-            long partitionKey = GetPartitionKey(room);
-
-            string proxyUrl = $"{proxyAddress}/api/room/{room}/?user={user}&PartitionKey={partitionKey}&PartitionKind=Int64Range";
-            
-            StringContent content = new StringContent($"\"{message}\"".ToString(), Encoding.UTF8, "application/json");
-           
-            using (HttpResponseMessage response = await this.httpClient.PostAsync(proxyUrl, content))
+        public async Task<ActionResult> SendMessage(string room, string user, [FromBody] string message)
+        {
+            try
             {
-                return new ContentResult()
+                requestCounter.SignalEventOccured();
+
+                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri proxyAddress = GetProxyAddress(serviceName);
+                long partitionKey = GetPartitionKey(room);
+
+                string proxyUrl = $"{proxyAddress}/api/room/{room}/?user={user}&PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+                StringContent content = new StringContent($"\"{message}\"".ToString(), Encoding.UTF8, "application/json");
+
+                using (HttpResponseMessage response = await this.httpClient.PostAsync(proxyUrl, content))
                 {
-                    StatusCode = (int)response.StatusCode,
-                    Content = await response.Content.ReadAsStringAsync()
-                };
+                    return new ContentResult()
+                    {
+                        StatusCode = (int)response.StatusCode,
+                        Content = await response.Content.ReadAsStringAsync()
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

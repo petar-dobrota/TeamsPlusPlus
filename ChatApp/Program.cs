@@ -23,7 +23,7 @@ namespace TeamsPlusPlus
 
             var mainForm = new MainForm();
             mainForm.FormClosed += (dummy1, dummy2) => Application.Exit();
-            ChatRoomsModel.Instance.SubscribeOnMessage(newMessage =>
+            ChatRoomsModel.Instance.SubscribeOnDataChanged(() =>
             {
                 if (!mainForm.IsDisposed) mainForm.Invoke((MethodInvoker)(async () =>
                 {
