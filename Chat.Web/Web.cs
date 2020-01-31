@@ -20,9 +20,33 @@ namespace Chat.Web
     /// </summary>
     internal sealed class Web : StatelessService
     {
+        private readonly EventCounter httpRequestCounter;
+
         public Web(StatelessServiceContext context)
             : base(context)
-        { }
+        { httpRequestCounter = new EventCounter(60000); }
+
+        protected override Task OnOpenAsync(CancellationToken cancellationToken)
+        {
+            new Thread(() => {
+
+                while (!cancellationToken.IsCancellationRequested)
+                {
+
+                    try
+                    {
+                        int numRequests = httpRequestCounter.GetNumberOfEventsInInterval();
+                        Partition.ReportLoad(new List<LoadMetric> { new LoadMetric("NumRequestsPerMinute", numRequests) });
+                    }
+                    catch (Exception) { }
+
+                    Thread.Sleep(1000);
+                }
+
+            }).Start();
+
+            return base.OnOpenAsync(cancellationToken);
+        }
 
         /// <summary>
         /// Optional override to create listeners (like tcp, http) for this service instance.
@@ -43,7 +67,7 @@ namespace Chat.Web
                                         services => services
                                             .AddSingleton<HttpClient>(new HttpClient())
                                             .AddSingleton<FabricClient>(new FabricClient())
-                                            .AddSingleton<EventCounter>(new EventCounter(60000))
+                                            .AddSingleton<EventCounter>(httpRequestCounter)
                                             .AddSingleton<StatelessServiceContext>(serviceContext))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()

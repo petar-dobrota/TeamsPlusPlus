@@ -37,5 +37,6 @@ packages/
 *.sdf
 bin/
 obj/
+pkg/Debug/
 Debug/
 Release/

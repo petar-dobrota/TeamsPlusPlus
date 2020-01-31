@@ -47,7 +47,7 @@ namespace Chat.Web
             }
         }
 
-        public double GetNumberOfEventsInInterval() {
+        public int GetNumberOfEventsInInterval() {
             long timeNowMillis = timeProvider();
             lock (lockObj)
             {
