@@ -3,13 +3,13 @@
   <Parameters>
     <Parameter Name="Chat.UserProfile_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="Chat.UserProfile_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Chat.UserProfile_PartitionCount" DefaultValue="1" />
+    <Parameter Name="Chat.UserProfile_PartitionCount" DefaultValue="15" />
     <Parameter Name="Chat.UserProfile_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Chat.Web_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="Chat.Web_InstanceCount" DefaultValue="-1" />
     <Parameter Name="Chat.Data_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="Chat.Data_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Chat.Data_PartitionCount" DefaultValue="1" />
+    <Parameter Name="Chat.Data_PartitionCount" DefaultValue="15" />
     <Parameter Name="Chat.Data_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -63,7 +63,7 @@
     </Service>
     <Service Name="Chat.Data" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="Chat.DataType" TargetReplicaSetSize="[Chat.Data_TargetReplicaSetSize]" MinReplicaSetSize="[Chat.Data_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="4" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+        <UniformInt64Partition PartitionCount="[Chat.Data_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
   </DefaultServices>
