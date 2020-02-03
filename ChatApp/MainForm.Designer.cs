@@ -45,10 +45,7 @@
             this.lstChatRooms.FormattingEnabled = true;
             this.lstChatRooms.ItemHeight = 16;
             this.lstChatRooms.Items.AddRange(new object[] {
-            "MyRoom",
-            "Test",
-            "Test2",
-            "SF"});
+            "public"});
             this.lstChatRooms.Location = new System.Drawing.Point(12, 36);
             this.lstChatRooms.Name = "lstChatRooms";
             this.lstChatRooms.Size = new System.Drawing.Size(180, 340);
@@ -74,11 +71,7 @@
             this.lstChatMessages.FormattingEnabled = true;
             this.lstChatMessages.ItemHeight = 16;
             this.lstChatMessages.Items.AddRange(new object[] {
-            "Random poruka 1",
-            "Rsdkasnfcdnjnciddddddddddddddddddddddd",
-            "MyMessage snjhasuchneda sdas s dsd",
-            "other messagess da sssss",
-            "another message :D"});
+            "   "});
             this.lstChatMessages.Location = new System.Drawing.Point(198, 36);
             this.lstChatMessages.Name = "lstChatMessages";
             this.lstChatMessages.Size = new System.Drawing.Size(590, 340);
@@ -95,7 +88,7 @@
             this.lblSelectedRoom.Name = "lblSelectedRoom";
             this.lblSelectedRoom.Size = new System.Drawing.Size(590, 24);
             this.lblSelectedRoom.TabIndex = 4;
-            this.lblSelectedRoom.Text = "MyRoom";
+            this.lblSelectedRoom.Text = "public";
             this.lblSelectedRoom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSend
@@ -118,8 +111,9 @@
             this.txtMyMessage.Name = "txtMyMessage";
             this.txtMyMessage.Size = new System.Drawing.Size(515, 20);
             this.txtMyMessage.TabIndex = 6;
-            this.txtMyMessage.Text = "nova porukaa... typing";
+            this.txtMyMessage.Text = " type message here";
             this.txtMyMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.global_KeyDown);
+            this.txtMyMessage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtMyMessage_MouseDown);
             // 
             // btnJoinRoom
             // 
@@ -144,7 +138,7 @@
             this.Controls.Add(this.lstChatMessages);
             this.Controls.Add(this.lblChatRooms);
             this.Controls.Add(this.lstChatRooms);
-            this.MinimumSize = new System.Drawing.Size(816, 489);
+            this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "MainForm";
             this.Text = "ChatSoft Teams++";
             this.ResumeLayout(false);

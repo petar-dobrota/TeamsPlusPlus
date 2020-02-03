@@ -122,5 +122,11 @@ namespace TeamsPlusPlus
         }
 
         #endregion
+
+        private void txtMyMessage_MouseDown(object sender, MouseEventArgs e)
+        {
+            txtMyMessage.SelectionStart = 0;
+            txtMyMessage.SelectionLength = txtMyMessage.Text.Length;
+        }
     }
 }
