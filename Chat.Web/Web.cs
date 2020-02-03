@@ -78,9 +78,5 @@ namespace Chat.Web
             };
         }
 
-        internal static Uri GetChatDataServiceName(ServiceContext context)
-        {
-            return new Uri($"{context.CodePackageActivationContext.ApplicationName}/Chat.Data");
-        }
     }
 }

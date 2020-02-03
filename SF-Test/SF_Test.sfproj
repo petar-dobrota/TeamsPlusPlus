@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chat.Data\Chat.Data.csproj" />
+    <ProjectReference Include="..\Chat.UserProfile\Chat.UserProfile.csproj" />
     <ProjectReference Include="..\Chat.Web\Chat.Web.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>

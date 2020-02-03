@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/SF_Test" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="Chat.UserProfile_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="Chat.UserProfile_PartitionCount" Value="1" />
+    <Parameter Name="Chat.UserProfile_MinReplicaSetSize" Value="1" />
+    <Parameter Name="Chat.UserProfile_TargetReplicaSetSize" Value="1" />
     <Parameter Name="Chat.Web_ASPNETCORE_ENVIRONMENT" Value="Development" />
     <Parameter Name="Chat.Web_InstanceCount" Value="1" />
     <Parameter Name="Chat.Data_ASPNETCORE_ENVIRONMENT" Value="Development" />

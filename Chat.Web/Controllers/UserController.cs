@@ -46,7 +46,7 @@ namespace Chat.Web.Controllers
             {
                 requestCounter.SignalEventOccured();
 
-                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri serviceName = GetUserProfileServiceName(this.serviceContext);
                 Uri proxyAddress = GetProxyAddress(serviceName);
                 long partitionKey = GetPartitionKey(userId);
 
@@ -76,7 +76,7 @@ namespace Chat.Web.Controllers
             {
                 requestCounter.SignalEventOccured();
 
-                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri serviceName = GetUserProfileServiceName(this.serviceContext);
                 Uri proxyAddress = GetProxyAddress(serviceName);
                 long partitionKey = GetPartitionKey(userId);
 
@@ -97,6 +97,11 @@ namespace Chat.Web.Controllers
             {
                 throw e;
             }
+        }
+
+        internal static Uri GetUserProfileServiceName(ServiceContext context)
+        {
+            return new Uri($"{context.CodePackageActivationContext.ApplicationName}/Chat.UserProfile");
         }
     }
 }

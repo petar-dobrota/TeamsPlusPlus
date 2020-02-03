@@ -49,7 +49,7 @@ namespace Chat.Web
             {
                 requestCounter.SignalEventOccured();
 
-                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri serviceName = GetChatDataServiceName(this.serviceContext);
                 Uri proxyAddress = GetProxyAddress(serviceName);
                 long partitionKey = GetPartitionKey(room);
 
@@ -79,7 +79,7 @@ namespace Chat.Web
             {
                 requestCounter.SignalEventOccured();
 
-                Uri serviceName = Web.GetChatDataServiceName(this.serviceContext);
+                Uri serviceName = GetChatDataServiceName(this.serviceContext);
                 Uri proxyAddress = GetProxyAddress(serviceName);
                 long partitionKey = GetPartitionKey(room);
 
@@ -100,6 +100,11 @@ namespace Chat.Web
             {
                 throw e;
             }
+        }
+
+        internal static Uri GetChatDataServiceName(ServiceContext context)
+        {
+            return new Uri($"{context.CodePackageActivationContext.ApplicationName}/Chat.Data");
         }
     }
 }

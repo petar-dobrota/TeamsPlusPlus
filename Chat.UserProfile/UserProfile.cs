@@ -14,44 +14,20 @@ using Microsoft.ServiceFabric.Data;
 using Chat.Data.Domain;
 using Chat.Data.Repository;
 
-namespace Chat.Data
+namespace Chat.UserProfile
 {
     /// <summary>
     /// The FabricRuntime creates an instance of this class for each service type instance. 
     /// </summary>
-    internal sealed class Data : StatefulService
+    internal sealed class UserProfile : StatefulService
     {
-        private readonly RoomService roomService;
 
-        public Data(StatefulServiceContext context)
+        private readonly UserService userService;
+
+        public UserProfile(StatefulServiceContext context)
             : base(context)
         {
-            roomService = new RoomService(new ChatRoomReliableRepository(StateManager));
-        }
-
-        protected override Task OnOpenAsync(ReplicaOpenMode openMode, CancellationToken cancellationToken)
-        {
-            new Thread(async () => {
-
-                while (!cancellationToken.IsCancellationRequested)
-                {
-
-                    try
-                    {
-                        if (Partition != null && Partition.ReadStatus != PartitionAccessStatus.ReconfigurationPending)
-                        {
-                            int roomCount = await roomService.GetRoomCountAsync(cancellationToken);
-                            Partition.ReportLoad(new List<LoadMetric> { new LoadMetric("RoomCount", roomCount) });
-                        }
-                    }
-                    catch (Exception) { }
-
-                    Thread.Sleep(1000);
-                }
-
-            }).Start();
-
-            return base.OnOpenAsync(openMode, cancellationToken);
+            userService = new UserService(new UserReliableRepository(StateManager));
         }
 
         /// <summary>
@@ -66,14 +42,14 @@ namespace Chat.Data
                     new KestrelCommunicationListener(serviceContext, (url, listener) =>
                     {
                         ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
-                        
+
                         return new WebHostBuilder()
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
                                             .AddSingleton(serviceContext)
                                             .AddSingleton(new FabricClient())
-                                            .AddSingleton(roomService)
+                                            .AddSingleton(userService)
                                             .AddSingleton(this.StateManager))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
@@ -85,9 +61,5 @@ namespace Chat.Data
 
         }
 
-        internal static Uri GetChatDataServiceName(StatefulServiceContext ctx)
-        {
-            return new Uri($"{ctx.CodePackageActivationContext.ApplicationName}/Chat.Data");
-        }
     }
 }

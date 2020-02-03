@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="SF_TestType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="Chat.UserProfile_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="Chat.UserProfile_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="Chat.UserProfile_PartitionCount" DefaultValue="1" />
+    <Parameter Name="Chat.UserProfile_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Chat.Web_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="Chat.Web_InstanceCount" DefaultValue="-1" />
     <Parameter Name="Chat.Data_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
@@ -11,6 +15,13 @@
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="Chat.UserProfilePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Chat.UserProfile_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="Chat.WebPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
@@ -31,6 +42,11 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="Chat.UserProfile" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="Chat.UserProfileType" TargetReplicaSetSize="[Chat.UserProfile_TargetReplicaSetSize]" MinReplicaSetSize="[Chat.UserProfile_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[Chat.UserProfile_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
     <Service Name="Chat.Web" ServiceDnsName="teamsplusplus.proxy" ServicePackageActivationMode="ExclusiveProcess">
       <StatelessService ServiceTypeName="Chat.WebType" InstanceCount="[Chat.Web_InstanceCount]">
         <SingletonPartition />
