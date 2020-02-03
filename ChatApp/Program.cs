@@ -25,10 +25,23 @@ namespace TeamsPlusPlus
             mainForm.FormClosed += (dummy1, dummy2) => Application.Exit();
             ChatRoomsModel.Instance.SubscribeOnDataChanged(() =>
             {
-                if (!mainForm.IsDisposed) mainForm.Invoke((MethodInvoker)(async () =>
+                try {
+                    mainForm.Invoke((MethodInvoker)(async () =>
+                    {
+                        try
+                        {
+                            await mainForm.RedrawAsync();
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            // app is shuting down, this is ok
+                        }
+                    }));
+                }
+                catch (ObjectDisposedException)
                 {
-                    if (!mainForm.IsDisposed) await mainForm.RedrawAsync();
-                }));
+                    // app is shuting down, this is ok
+                }
             });
 
             Application.Run(mainForm);
