@@ -55,7 +55,7 @@
         </LoadMetrics>
         <ServiceScalingPolicies>
           <ScalingPolicy>
-            <AveragePartitionLoadScalingTrigger MetricName="NumRequestsPerMinute" LowerLoadThreshold="0" UpperLoadThreshold="15" ScaleIntervalInSeconds="10" />
+            <AveragePartitionLoadScalingTrigger MetricName="NumRequestsPerMinute" LowerLoadThreshold="150" UpperLoadThreshold="1500" ScaleIntervalInSeconds="10" />
             <InstanceCountScalingMechanism MinInstanceCount="1" MaxInstanceCount="5" ScaleIncrement="1" />
           </ScalingPolicy>
         </ServiceScalingPolicies>
