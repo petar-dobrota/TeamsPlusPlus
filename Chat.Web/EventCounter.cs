@@ -12,7 +12,8 @@ namespace Chat.Web
         private readonly LinkedList<long> EventOccurrences = new LinkedList<long>();
         private readonly object lockObj = new object();
 
-        public EventCounter(int intervalLengthMillis) : this(intervalLengthMillis, DateTimeOffset.Now.ToUnixTimeMilliseconds)
+        public EventCounter(int intervalLengthMillis) : this(intervalLengthMillis, 
+            () => DateTimeOffset.Now.ToUnixTimeMilliseconds())
         { }
 
         public EventCounter(int intervalLengthMillis, Func<long> timeProvider)
@@ -40,7 +41,7 @@ namespace Chat.Web
         public void SignalEventOccured()
         {
             long timeNowMillis = timeProvider();
-            lock(lockObj)
+            lock (lockObj)
             {
                 MaintainEventOccurrencesUnsafe(timeNowMillis);
                 EventOccurrences.AddLast(timeNowMillis);
@@ -49,6 +50,7 @@ namespace Chat.Web
 
         public int GetNumberOfEventsInInterval() {
             long timeNowMillis = timeProvider();
+            
             lock (lockObj)
             {
                 MaintainEventOccurrencesUnsafe(timeNowMillis);
