@@ -73,8 +73,6 @@ namespace Chat.Data.Repository
             int newCount = (roomCountConditional.HasValue ? roomCountConditional.Value : 0) + increment;
             await roomCountQueue.EnqueueAsync(tx, newCount);
 
-            await tx.CommitAsync();
-
             return newCount;
         }
         
