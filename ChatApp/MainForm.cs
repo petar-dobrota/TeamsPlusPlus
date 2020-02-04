@@ -38,19 +38,29 @@ namespace TeamsPlusPlus
             return $"{prefix}{message.senderUsed}:  {message.messageBody}";
         }
 
+        private int oldRoomsHash;
         private void UpdateChatRoomsList(List<string> roomNames)
         {
             var newRoomsNames = new List<string>(roomNames);
-            
+
+            int roomsHash = CollectionHash(roomNames);
+            if (roomsHash == oldRoomsHash) return;
+            oldRoomsHash = roomsHash;
+
             int selectedIndex = lstChatRooms.SelectedIndex;
             lstChatRooms.DataSource = newRoomsNames;
             if (selectedIndex >= newRoomsNames.Count) selectedIndex = newRoomsNames.Count - 1;
             lstChatRooms.SelectedIndex = selectedIndex;
         }
 
+        private int oldMessagesHash;
         private void UpdateChatMessages(ChatRoom room)
         {
             var newMessages = room.messages.Select(msgStruct => MessageToString(msgStruct)).ToList();
+
+            int messagesHash = CollectionHash(newMessages);
+            if (messagesHash == oldMessagesHash) return;
+            oldMessagesHash = messagesHash;
 
             int selectedIdx = lstChatMessages.SelectedIndex;
             lstChatMessages.DataSource = newMessages;
